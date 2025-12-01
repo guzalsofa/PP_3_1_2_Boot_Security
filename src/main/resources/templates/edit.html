@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование пользователя</title>
+</head>
+<body>
+
+<h1>Редактирование пользователя</h1>
+
+<form th:action="@{/admin/edit}" method="post">
+
+    <input type="hidden" name="id" th:value="${user.id}"/>
+
+    <label>
+        Имя:
+        <input type="text" name="name" th:value="${user.name}" required/>
+    </label>
+    <br/>
+
+    <label>
+        Возраст:
+        <input type="number" name="age" th:value="${user.age}" required/>
+    </label>
+    <br/>
+
+    <label>
+        Профессия:
+        <input type="text" name="job" th:value="${user.job}" required/>
+    </label>
+    <br/>
+
+    <input type="hidden"
+           th:name="${_csrf.parameterName}"
+           th:value="${_csrf.token}"/>
+
+    <button type="submit">Сохранить</button>
+</form>
+
+<p>
+    <a th:href="@{/admin/users}">Назад к списку</a>
+</p>
+
+</body>
+</html>
