@@ -23,7 +23,9 @@
         <th>Имя</th>
         <th>Возраст</th>
         <th>Профессия</th>
+        <th>Роль</th>
         <th>Действия</th>
+
 
     </tr>
     </thead>
@@ -33,6 +35,7 @@
         <td th:text="${user.name}">Имя</td>
         <td th:text="${user.age}">25</td>
         <td th:text="${user.job}">Разработчик</td>
+        <td th:text="${user.role}">Админ</td>
         <td>
         <a th:href="@{/admin/edit(id=${user.id})}">Редактировать</a>
         <form th:action="@{/admin/delete}" method="post" style="display: inline;">
@@ -77,6 +80,10 @@
         <input type="password" name="password" required>
     </label>
     <br/>
+
+    <label>Роли:</label>
+    <input type="checkbox" name="roles" value="ROLE_USER"> USER
+    <input type="checkbox" name="roles" value="ROLE_ADMIN"> ADMIN
 
     <input type="hidden"
            th:name="${_csrf.parameterName}"
