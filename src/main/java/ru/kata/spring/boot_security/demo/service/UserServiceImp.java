@@ -38,15 +38,33 @@ public class UserServiceImp implements UserService {
 
     @Transactional
     @Override
-    public void addUser(User user) {
-        if (user.getRole() == null || user.getRole().isEmpty()){
-            Set<Role> roles = new HashSet<>();
-            roles.add(roleService.findRoleByName("ROLE_USER"));
-            user.setRole(roles);
+    public void addUser(User user, List<String> roleNames) {
+        System.out.println(">>> addUser CALLED for username = " + user.getUsername()
+                + ", roles = " + roleNames);
+        Set<Role> roles = new HashSet<>();
+        if (roleNames != null && !roleNames.isEmpty()) {
+            for (String roleName : roleNames) {
+                Role role = roleService.findRoleByName(roleName);
+                if (role != null) {
+                    roles.add(role);
+                }
+            }
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userDao.addUser(user);
-    }
+        if (roles.isEmpty()) {
+            Role defaultRole = roleService.findRoleByName("ROLE_USER");
+            System.out.println("   default role: ROLE_USER -> " + defaultRole);
+            if (defaultRole != null) {
+                roles.add(defaultRole);
+            }
+        }
+            user.setRole(roles);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+            System.out.println(">>> BEFORE SAVE user = " + user);
+            userDao.addUser(user);
+            System.out.println(">>> AFTER SAVE user = " + user);
+        }
+
 
     @Transactional
     @Override
@@ -60,7 +78,7 @@ public class UserServiceImp implements UserService {
         userDao.deleteUser(id);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public User findByUsername(String username){ return userDao.findUserByUsername(username);}
 }

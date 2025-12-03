@@ -40,21 +40,14 @@ public class AdminController {
                                 @RequestParam("job") String job,
                                 @RequestParam("username") String username,
                                 @RequestParam("password") String password,
-                                @RequestParam(value = "roles", required = false) List<String> roleNames) {
+                                @RequestParam(value = "roles", required = false) List<String> roles) {
         User user = new User();
         user.setName(name);
         user.setAge(age);
         user.setJob(job);
         user.setUsername(username);
         user.setPassword(password);
-        if (roleNames != null && !roleNames.isEmpty()) {
-            Set<Role> roles = new HashSet<>();
-            for (String roleName : roleNames) {
-                roles.add(roleService.findRoleByName(roleName));
-            }
-            user.setRole(roles);
-        }
-        userService.addUser(user);
+        userService.addUser(user, roles);
         return "redirect:/admin";
     }
 
